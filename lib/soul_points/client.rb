@@ -52,11 +52,25 @@ class SoulPoints::Client
   def show( args )
       subdomain = args[0]
     soul_points = JSON.parse( RestClient.get 'http://' + subdomain + '.mysoulpoints.com', :accept => :json )
-    puts soul_points['soul_point']['current'].to_s + '/' + soul_points['soul_point']['max'].to_s
+    puts '(' + soul_points['soul_point']['current'].to_s + '/' + soul_points['soul_point']['max'].to_s + ') ' + sprintf( "%0.1f", ( soul_points['soul_point']['current'].to_f / soul_points['soul_point']['max'].to_f ) * 100 ) + "%"
+  end
+
+  def me( args )
+    me = JSON.parse( RestClient.get 'http://mysoulpoints.com/me.json?auth_token=' + @credentials[:api_key], :accept => :json )
+    puts me['email']
+    puts '(' + me['soul_points']['current'].to_s + '/' + me['soul_points']['max'].to_s + ') ' + sprintf( "%0.1f", ( me['soul_points']['current'].to_f / me['soul_points']['max'].to_f ) * 100 ) + "%"
   end
 
   def gain( args )
-      puts RestClient.post 'http://mysoulpoints.com/events', :event => { :value => args[0], :description => args[1] }, :auth_token => @credentials[:api_key], :accept => :json
+      resp = RestClient.post 'http://mysoulpoints.com/events.json', :event => { :value => args[0], :description => args[1] }, :auth_token => @credentials[:api_key], :accept => :json
+
+      if args[0].to_i > 0
+        puts "You \033[1;32mgained\033[0m #{args[0].to_i.abs} soul points - \"#{args[1]}\"."
+      else
+        puts "You \033[1;31mlost\033[0m #{args[0].to_i.abs} soul points - \"#{args[1]}\"."
+      end
+
+      me(args)
   end
 
   # Pretty much just an alias for gain, with negative number
