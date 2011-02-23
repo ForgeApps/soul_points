@@ -45,7 +45,18 @@ class SoulPoints::Client
 
   def help( args )
     puts 'Usage:'
-    puts '$ soul_points show mcphat             #Displays soul points for user mcphat'
+    puts '$ soul_points show mcphat                                       #Displays soul points for user mcphat'
+    puts '$ soul_points gain 10 "Something awesome happend" '
+    puts '$ soul_points lose 10 "Something terrible happend"'
+    puts '$ soul_points gain 10 "Something awesome happend" --twitter     #Also posts to twitter if you have it enabled on the site '
+    puts '$ soul_points gain 10 "Something awesome happend" --no-twitter  #Will override any default settings in your ~/.soul_points file and not post to twitter '
+    puts ''
+    puts 'Your ~/.soul_points file may contain the following. You can replace 1 with 0 to get the desired effect.'
+    puts 'The command line options override any defaults you may have in your ~/.soul_points file.'
+    puts ''
+    puts ':always_post_to_campfire: 1'
+    puts ':always_post_to_twitter: 1'
+    puts ':always_post_to_jaconda: 1'
   end
 
   # Show your current soul points
