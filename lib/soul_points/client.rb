@@ -54,9 +54,9 @@ class SoulPoints::Client
     puts 'Your ~/.soul_points file may contain the following. You can replace 1 with 0 to get the desired effect.'
     puts 'The command line options override any defaults you may have in your ~/.soul_points file.'
     puts ''
-    puts ':always_post_to_campfire: 1'
-    puts ':always_post_to_twitter: 1'
-    puts ':always_post_to_jaconda: 1'
+    puts ':always_post_to_campfire: true'
+    puts ':always_post_to_twitter: false'
+    puts ':always_post_to_jaconda: true'
   end
 
   # Show your current soul points
