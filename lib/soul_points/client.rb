@@ -62,7 +62,14 @@ class SoulPoints::Client
   end
 
   def gain( args )
-      resp = RestClient.post 'http://mysoulpoints.com/events.json', :event => { :value => args[0], :description => args[1] }, :auth_token => @credentials[:api_key], :accept => :json
+      resp = RestClient.post 'http://mysoulpoints.com/events.json', :event => { 
+          :value => args[0], 
+          :description => args[1],
+          :post_to_campfire => ( ( @credentials[:always_post_to_campfire] && args.index('--no-campfire').nil? ) || !args.index('--campfire').nil? ) ? 1 : 0,
+          :post_to_jaconda  => ( ( @credentials[:always_post_to_jaconda]  && args.index('--no-jaconda').nil? ) || !args.index('--jaconda').nil? ) ? 1 : 0,
+          :post_to_twitter  => ( ( @credentials[:always_post_to_twitter]  && args.index('--no-twitter').nil? ) || !args.index('--twitter').nil? ) ? 1 : 0
+
+      }, :auth_token => @credentials[:api_key], :accept => :json
 
       if args[0].to_i > 0
         puts "You \033[1;32mgained\033[0m #{args[0].to_i.abs} soul points - \"#{args[1]}\"."
